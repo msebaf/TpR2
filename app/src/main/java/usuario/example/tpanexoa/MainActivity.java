@@ -14,29 +14,23 @@ import android.widget.Toast;
 import usuario.example.tpanexoa.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText etUsuario, etContrasenia;
-
-    private Button btIngresar;
-    private LogginActivityViewModel viewModel;
-
     private ActivityMainBinding binding;
-
-    private LogginActivityViewModel mv;
-
+    LogginActivityViewModel mv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_main);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        mv = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(LogginActivityViewModel.class);
+        mv= ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(LogginActivityViewModel.class);
 
-        binding.btIngresar.setOnClickListener(new View.OnClickListener() {
+        binding.btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mv.validar(binding.etUsuario.getText().toString(), binding.etContrasenia.getText().toString());
+                mv.validar(binding.ptUserName.getText().toString(), binding.ptPassword.getText().toString());
             }
         });
+
 
         mv.getResultado().observe(this, new Observer<Boolean>() {
             @Override
@@ -44,13 +38,21 @@ public class MainActivity extends AppCompatActivity {
                 //segunda actividad
                 Intent intent = new Intent(MainActivity.this, MiMenu.class);
                 startActivity(intent);
+
+
             }
         });
+
         mv.getResultadoNegativo().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 binding.tvREsp.setText("Acceso Denegado");
             }
         });
+
+
+
+
+
     }
 }
